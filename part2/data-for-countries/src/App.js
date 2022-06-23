@@ -7,8 +7,9 @@ const App = ()=>{
   const [countries,setCountries] = useState([])
 
   const [viewCountry,setviewCountry] = useState([])
+  const [viewWeather, setViewWeather] = useState([])
 
-  const API_KEY = process.env.API_KEY
+  const API_KEY = process.env.REACT_APP_API_KEY;
 
   function handleCountry(e) {
     setCountryName(e.target.value)
@@ -19,8 +20,24 @@ const App = ()=>{
     .then(response=>{
       setCountries(response.data)
     })
-  },[])
+  },[countryName])
 
+  useEffect(()=>{
+    
+  },[viewCountry])
+
+  useEffect(()=>{
+    if(viewCountry.length !== 0){
+      axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${viewCountry[0]?.capital}&appid=${API_KEY}`)
+    .then(response=>{
+      setViewWeather([
+        response.data.main,
+        response.data.weather,
+        response.data.wind,
+      ])
+    })
+    }
+  },[API_KEY, countryName, viewCountry])
   function showCountry(info){
     setviewCountry([info])
   }
@@ -51,26 +68,26 @@ const App = ()=>{
         </>
       )      
     } else if (countryFilter.length === 1 && filter){
-      console.log(countryFilter)
       return(
         <>
         <h1>{countryFilter[0].name}</h1>
         <p>capital - {countryFilter[0].capital}</p>
         <p>Region - {countryFilter[0].region}</p>
         <p>Area - {countryFilter[0].area}</p>
-        <img src={countryFilter[0].flag} alt={countryFilter[0].name + 'flag'} width='200px' height='300px' />
+        <img src={countryFilter[0].flag} alt={countryFilter[0].name + 'flag'} width='200px' height='200px' />
         <h4>languages</h4>
         <ul>
         {countryFilter[0].languages.map((lang,i)=><li key={i}>{lang.name}</li >)}
         </ul>
-        <h1>weather</h1>
-        {axios.get
-        (`https://api.openweathermap.org/data/2.5/weather?lat=${countryFilter[0].latlng[0]}
-        &lon=${countryFilter[0].latlng[1]}
-        &appid=${API_KEY}`)
-        .then(response=>{
-          console.log(response.data)
-        })
+        {
+          viewCountry.length === 0? <></> :
+          <>
+          <h5>weather in {viewCountry[0].capital}</h5>
+              <p>temperature {viewWeather[0]?.temp}</p>
+              {/* <img src={`${viewWeather[1][0].icon}.png`} alt={viewWeather[1][0].icon} /> */}
+              <p> text {viewCountry[1][0].icon}</p>
+              <p>wind {viewWeather[2]?.speed}</p>
+          </>
         }
         </>
       )
@@ -91,6 +108,15 @@ const App = ()=>{
           <ul>
           {viewCountry[0].languages.map((lang,i)=><li key={i}>{lang.name}</li >)}
           </ul>
+          {
+            viewWeather.length === 0 ? <> </>:
+            <>
+              <h5>weather in {viewCountry[0].capital}</h5>
+              <p>temperature {viewWeather[0]?.temp}</p>
+              <img src={`${viewWeather[1][0].icon}.png`} alt={viewWeather[1][0].main + ' icon'} />
+              <p>wind {viewWeather[2]?.speed}</p>
+            </>
+          }
           </>
          : filterCountries(countryName)}
       </div>
