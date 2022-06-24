@@ -1,9 +1,9 @@
 import { useState,useEffect } from 'react'
-import axios from 'axios'
 import Filter from './filter'
 import Form from './form'
 import Phonebook from './phonebook'
 import PhoneBookService from './services/phonebook'
+import Notification from './notification'
 
 const App = () => {
   const [persons, setPersons] = useState([]) 
@@ -13,6 +13,8 @@ const App = () => {
 
   const [newSearch, setSearch] = useState('')
 
+  const [message,setMessage] = useState({})
+
   useEffect(()=>{
     PhoneBookService.getAll()
     .then(res=>{
@@ -21,35 +23,30 @@ const App = () => {
     .catch(err=>{
       console.log(err)
     })
-
-    // axios.get('http://localhost:3001/persons')
-    // .then((response)=>{
-    //   setPersons(response.data)
-    // })
   },[])
 
-
-  formProps = {
+  const formProps = {
     persons,
     setPersons,
     setNewName,
     setNewNumber,
     newName,
-    newNumber
+    newNumber,
+    setMessage,
   }
 
   return (
+    
     <div>
       <h2>Phonebook</h2>
+      <Notification message={message} persons={persons} />
       <Filter newSearch={newSearch} setSearch={setSearch} />
       <h4>Add a new person</h4>
       <Form formProps={formProps} />
-      <Phonebook newSearch={newSearch} persons={persons} setPersons={setPersons} />
+      <Phonebook newSearch={newSearch} persons={persons} setPersons={setPersons} setMessage={setMessage} />
     </div>
   )
 
 }
-
-let formProps ={}
 
 export default App
