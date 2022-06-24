@@ -1,6 +1,6 @@
 import phoneBookService from './services/phonebook'
 const Form = ({formProps})=>{
-    const {newName,newNumber,persons,setPersons, setNewNumber ,setNewName} = formProps
+    const {newName,newNumber,persons,setPersons, setNewNumber ,setNewName,setMessage} = formProps
     const handleSubmit = (e) =>{
         e.preventDefault()
         const personsCopy = [...persons]
@@ -14,9 +14,9 @@ const Form = ({formProps})=>{
               name: newName,
               number: newNumber
             })
-            .then(res=>{
+            .then(()=>{
               phoneBookService.getAll()
-            .then(res=>{
+           .then(res=>{
               setPersons(res.data)
             })
             })
@@ -32,9 +32,16 @@ const Form = ({formProps})=>{
             number: newNumber
           })
           .then(()=>{
-            alert(`${newName} added`)
             phoneBookService.getAll()
             .then(res=>{
+              setMessage({
+                error: false,
+                success: true,
+                message: `added ${newName}`,
+              })
+              setTimeout(()=>{
+                setMessage('start')
+              },2000)
               setPersons(res.data)
             })
           })
