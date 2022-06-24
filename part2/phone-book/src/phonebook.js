@@ -1,6 +1,6 @@
 import Remove from "./remove"
 
-const Phonebook = ({newSearch, persons, setPersons})=>{
+const Phonebook = ({newSearch, persons, setPersons,setMessage})=>{
     return(
         <div>
             <h2>Numbers</h2>
@@ -10,7 +10,7 @@ const Phonebook = ({newSearch, persons, setPersons})=>{
                 )
                 .map((person,index)=><p key={index}>{person.name} {person.number}</p>) : 
                 persons.map((person,index)=> <p key={index}>{person.name} {person.number}
-                <Remove id={person.id} name={person.name} setPersons={setPersons} />
+                <Remove id={person.id} name={person.name} setMessage={setMessage} setPersons={setPersons} />
                 </p>)
             }
         </div>
