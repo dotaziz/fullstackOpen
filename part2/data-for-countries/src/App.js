@@ -84,7 +84,7 @@ const App = ()=>{
           <>
           <h5>weather in {viewCountry[0].capital}</h5>
               <p>temperature {viewWeather[0]?.temp}</p>
-              {/* <img src={`${viewWeather[1][0].icon}.png`} alt={viewWeather[1][0].icon} /> */}
+              <img src={`https://openweathermap.org/img/w/${viewWeather[1][0].icon}.png`} alt={viewWeather[1][0].main + ' icon'} />
               <p> text {viewCountry[1][0].icon}</p>
               <p>wind {viewWeather[2]?.speed}</p>
           </>
@@ -113,7 +113,7 @@ const App = ()=>{
             <>
               <h5>weather in {viewCountry[0].capital}</h5>
               <p>temperature {viewWeather[0]?.temp}</p>
-              <img src={`${viewWeather[1][0].icon}.png`} alt={viewWeather[1][0].main + ' icon'} />
+              <img src={`https://openweathermap.org/img/w/${viewWeather[1][0].icon}.png`} width='100px' height='150px' alt={viewWeather[1][0].main + ' icon'} />
               <p>wind {viewWeather[2]?.speed}</p>
             </>
           }
