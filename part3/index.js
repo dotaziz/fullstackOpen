@@ -1,6 +1,10 @@
 const express = require('express')
-
+const morgan = require('morgan')
 const app = express()
+
+
+app.use(morgan())
+app.use(express.json())
 
 const persons = [
     { 
@@ -22,6 +26,11 @@ const persons = [
       "id": 4,
       "name": "Mary Poppendieck", 
       "number": "39-23-6423122"
+    },
+    {
+        "id":5,
+        "name":"Aziz",
+        "number":"3988309833"
     }
 ]
 
@@ -31,15 +40,43 @@ app.get('/api/persons',(req,res)=>{
 
 app.get('/api/persons/:id',(req,res)=>{
     const id = req.params.id
-    console.log(id)
     const getPerson = persons.filter((person)=> person.id === Number(id))
-
-    console.log(getPerson)
-
     if(getPerson.length !== 0){
         res.json(getPerson)
     }else{
-        res.status(404).end()
+        res.status(204).end()
+    }
+})
+
+app.delete('/api/persons/:id',(req,res)=>{
+    const id = req.params.id;
+    const index = persons.findIndex((person)=> person.id === Number(id))
+    const removePerson = persons.splice(index,1)
+
+    if(removePerson){
+        res.status(200).end()
+        console.log(persons)
+    }else{
+        res.status(204).end()
+    }
+
+})
+
+app.post('/api/persons',(req,res)=>{
+    if(req.body.name === undefined || req.body.number === undefined){
+        res.status(400).json(
+            "number or name can't be empty"
+        )
+    }else if(persons.find(person=>person.name === req.body.name)){
+        res.status(400).json({error:"name must be unique"})
+    }else{
+        const id = Math.floor(Math.random()* Date.now())
+        const data = {
+            id,
+            name: req.body.name,
+            number: req.body.number
+        }
+        res.status(200).end()
     }
 })
 
@@ -51,6 +88,8 @@ app.get('/info',(req,res)=>{
         `
     )
 })
+
+
 
 const PORT = 3001
 
