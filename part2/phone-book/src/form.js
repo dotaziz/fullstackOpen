@@ -4,7 +4,7 @@ const Form = ({formProps})=>{
     const handleSubmit = (e) =>{
         e.preventDefault()
         const personsCopy = [...persons]
-        if(JSON.stringify(personsCopy).includes(newName)){
+        if(JSON.stringify(personsCopy).includes(JSON.stringify({name: newName}))){
           // eslint-disable-next-line no-restricted-globals
           let auth = confirm(`${newName} is already added to phoneBook, do you want to replace the old number with a new one?`)
           if(auth){
@@ -46,7 +46,15 @@ const Form = ({formProps})=>{
             })
           })
           .catch(err=>{
-            console.log(err)
+            console.log(err.response.data.message)
+            setMessage({
+              error: true,
+              success: false,
+              message: err.response.data.message
+            })
+            setTimeout(()=>{
+              setMessage('start')
+            },2000)
           })
         }
     
@@ -66,7 +74,7 @@ const Form = ({formProps})=>{
                 name: <input required value={newName} onChange={handleNameChange}  />
             </div>
             <div>
-                number: <input required value={newNumber} onChange={handleNumberChange} />
+                number: <input required type='tel' value={newNumber} onChange={handleNumberChange} />
             </div>
             <div>
                 <button type="submit">add</button>
