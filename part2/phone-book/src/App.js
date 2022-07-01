@@ -21,7 +21,15 @@ const App = () => {
       setPersons(res.data)
     })
     .catch(err=>{
-      console.log(err)
+      // console.log(err)
+      setMessage({
+        error: true,
+        success: false,
+        message: err.message
+      })
+      setTimeout(()=>{
+        setMessage('start')
+      },2000)
     })
   },[])
 
