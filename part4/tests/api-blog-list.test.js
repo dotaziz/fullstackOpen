@@ -9,7 +9,9 @@ describe('equal length', () => {
         const request = await api.get('/api/blogs');
         console.log(request.body);
         
-        expect(request.body).toHaveLength(5);
+        expect(request.body).toHaveLength(24);
+
+        // this test will fail since the length of database is not 24 as it keeps changing.
     },10000);
 });
 
@@ -37,8 +39,7 @@ describe('post to db',()=>{
             .expect(201);
 
         const request = await api.get('/api/blogs');
-        console.log(request.body);
-
+        blog.likes = 0;
         expect(request.body).toHaveLength(request_initial.body.length + 1);
         const data = request.body[request.body.length -1];
         delete data.id;
@@ -53,13 +54,21 @@ describe('post to db',()=>{
         expect(request.body.likes).toBe(0);
     });
 
-    test.only('bad request if title && url is empty',async ()=>{
+    test('bad request if title && url is empty',async ()=>{
         delete blog.title;
         delete blog.url;
 
         await api.post('/api/blogs').send(blog).expect(400); 
     },10000);
 });
+
+// describe('delete from db',()=>{
+//     let id = '62cc9a9f44abfce0d4b88678';
+
+//     test('return 204 after blog removed',async()=>{
+//         await api.delete(`/api/blogs/${id}`).expect(2)
+//     });
+// });
 
 afterAll(()=>{
     mongoose.connection.close();
