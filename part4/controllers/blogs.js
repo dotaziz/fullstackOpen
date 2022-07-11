@@ -1,6 +1,6 @@
 const blogsRouter = require('express').Router();
 const Blog = require('../models/blogs');
-
+require('express-async-errors');
 
 blogsRouter.get('/',(req,res,next)=>{
     Blog.find({}).then((blogs)=>{
@@ -28,6 +28,17 @@ blogsRouter.post('/',(req,res,next)=>{
         }).catch(err=>{
             next(err);
         });
+});
+
+blogsRouter.delete('/:id',async (req,res)=>{
+    console.log(req.params.id);
+
+    const remove = await Blog.findByIdAndDelete(req.params.id);
+    if(remove.$isDeleted !== null ){
+        res.status(204).json('success');
+    }
+
+    res.status(400).json({'error':'content not found'});
 });
 
 module.exports = blogsRouter;

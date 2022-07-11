@@ -7,7 +7,6 @@ const api = supertest(app);
 describe('equal length', () => {
     test('verify if blog list in equal to database list',async () =>{
         const request = await api.get('/api/blogs');
-        console.log(request.body);
         
         expect(request.body).toHaveLength(24);
 
@@ -62,13 +61,21 @@ describe('post to db',()=>{
     },10000);
 });
 
-// describe('delete from db',()=>{
-//     let id = '62cc9a9f44abfce0d4b88678';
+describe('delete from db',()=>{
 
-//     test('return 204 after blog removed',async()=>{
-//         await api.delete(`/api/blogs/${id}`).expect(2)
-//     });
-// });
+    // change id after operation --- otherwise test will fail
+    let id = '62cc8f5c7f8ddb003a066465';
+
+    test('return 204 after blog removed',async()=>{
+        await api.delete(`/api/blogs/${id}`).expect(204);
+    });
+
+    let fakeId = 'lkdjlkjeoi3u40983030990';
+
+    test('if blog not found',async()=>{
+        await api.delete(`/api/blogs/${fakeId}`).expect(400);
+    });
+});
 
 afterAll(()=>{
     mongoose.connection.close();

@@ -7,3 +7,6 @@ Content-Type: application/json
 {
     "name":"writing backend"
 }
+
+###
+DELETE http://localhost:3001/api/blogs/62cc9c8af9ae41b5eaf6a164
