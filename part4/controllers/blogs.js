@@ -41,4 +41,15 @@ blogsRouter.delete('/:id',async (req,res)=>{
     res.status(400).json({'error':'content not found'});
 });
 
+
+blogsRouter.put('/:id',async (req,res)=>{
+    const update = await Blog.findByIdAndUpdate(req.params.id,{'likes':req.body.likes},{new:true});
+    if(update.isModified) {
+        res.status(204).json('success');
+    }
+
+    res.status(400).json({'error':'content not found'});
+});
+
+
 module.exports = blogsRouter;

@@ -64,17 +64,36 @@ describe('post to db',()=>{
 describe('delete from db',()=>{
 
     // change id after operation --- otherwise test will fail
-    let id = '62cc8f5c7f8ddb003a066465';
+    let id = '62ccaaced84f31dde5ac9d0b';
 
     test('return 204 after blog removed',async()=>{
         await api.delete(`/api/blogs/${id}`).expect(204);
-    });
+    },1000);
 
     let fakeId = 'lkdjlkjeoi3u40983030990';
 
     test('if blog not found',async()=>{
         await api.delete(`/api/blogs/${fakeId}`).expect(400);
-    });
+    },1000);
+});
+
+describe('edit db',()=>{
+    let id = '62cc8f9edec8c1278f57dd5d';
+    
+    test('return 204 after blog edit',async()=>{
+        await api.put(`/api/blogs/${id}`).send({
+            'likes':10
+        }).expect(204);
+    },1000);
+
+    let fakeId = 'lkdjlkjeoi3u40983030990';
+
+    test('if not found',async()=>{
+        await api.put(`/api/blogs/${fakeId}`).send({
+            'likes':20
+        }).expect(400);
+    },1000);
+
 });
 
 afterAll(()=>{
