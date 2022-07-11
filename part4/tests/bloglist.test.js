@@ -88,7 +88,7 @@ describe('most blogs',()=>{
     });
 });
 
-describe.only('most likes',()=>{
+describe('most likes',()=>{
     test('retunr author with most likes',()=>{
         const result = listHelpers.mostLikes(blogs);
         expect(result).toEqual(
@@ -96,3 +96,4 @@ describe.only('most likes',()=>{
         );
     });
 });
+
