@@ -28,9 +28,8 @@ describe('post to db',()=>{
         'title': 'writing unit tests',
         'author': 'aziz',
         'url':'https://localhost:4200',
-        'likes': 0,
     };
-    test.only('check if new blog is added',async()=>{
+    test('check if new blog is added',async()=>{
         const request_initial = await api.get('/api/blogs');
 
         await api.post('/api/blogs')
@@ -45,6 +44,14 @@ describe('post to db',()=>{
         delete data.id;
         expect(data).toEqual(blog);
     },10000);
+
+    test('like to 0 if property not found',async ()=>{
+        if(!blog.likes) blog.likes = 0;
+
+        const request = await api.post('/api/blogs').send(blog).expect(201);
+
+        expect(request.body.likes).toBe(0);
+    });
 });
 
 afterAll(()=>{

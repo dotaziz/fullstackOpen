@@ -11,8 +11,11 @@ blogsRouter.get('/',(req,res,next)=>{
 });
 
 blogsRouter.post('/',(req,res,next)=>{
+    
+    if(!req.body.likes){
+        req.body.likes = 0;
+    }
     const blog = new Blog(req.body);
-
     blog
         .save()
         .then(result => {
