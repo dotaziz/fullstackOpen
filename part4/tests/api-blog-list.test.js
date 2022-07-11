@@ -52,6 +52,13 @@ describe('post to db',()=>{
 
         expect(request.body.likes).toBe(0);
     });
+
+    test.only('bad request if title && url is empty',async ()=>{
+        delete blog.title;
+        delete blog.url;
+
+        await api.post('/api/blogs').send(blog).expect(400); 
+    },10000);
 });
 
 afterAll(()=>{
