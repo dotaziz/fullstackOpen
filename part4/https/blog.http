@@ -5,7 +5,7 @@ POST http://localhost:3001/api/blogs/
 Content-Type: application/json
 
 {
-    "title": "wg",
+    "title": "11111111111111dlkdjlkdj",
     "url":"localhost",
     "author":"aziz_li"
 }

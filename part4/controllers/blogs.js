@@ -33,9 +33,14 @@ blogsRouter.post('/',async(req,res,next)=>{
         url,
         user: user._id
     });
+
     blog
         .save()
         .then(result => {
+            const blogs = user.blogs;
+            blogs.push(blog);
+            user.blogs = blogs;
+            user.save();
             res.status(201).json(result);
         }).catch(err=>{
             next(err);

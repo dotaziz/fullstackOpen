@@ -6,10 +6,10 @@ const userSchema = new Schema({
     username: String,
     name: String,
     passwordHashed: String,
-    // blogs:[{
-    //     type: mongoose.Schema.Types.ObjectId,
-    //     ref: 'Blog'
-    // }]
+    blogs:[{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Blog'
+    }]
 });
 
 
