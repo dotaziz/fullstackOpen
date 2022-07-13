@@ -5,11 +5,13 @@ POST http://localhost:3001/api/blogs/
 Content-Type: application/json
 
 {
-    "name":"writing backend"
+    "title": "wg",
+    "url":"localhost",
+    "author":"aziz_li"
 }
 
 ###
-DELETE http://localhost:3001/api/blogs/62cc9c8af9ae41b5eaf6a164
+DELETE http://localhost:3001/api/blogs/
 
 ###
 PUT http://localhost:3001/api/blogs/62cc8f9edec8c1278f57dd5d

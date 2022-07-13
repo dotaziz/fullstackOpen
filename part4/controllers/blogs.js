@@ -1,26 +1,38 @@
 const blogsRouter = require('express').Router();
 const Blog = require('../models/blogs');
+const User = require('../models/users');
 require('express-async-errors');
 
 blogsRouter.get('/',(req,res,next)=>{
-    Blog.find({}).then((blogs)=>{
+    Blog.find({}).populate('user').then((blogs)=>{
         res.json(blogs);
     }).catch(err=>{
         next(err);
     });
 });
 
-blogsRouter.post('/',(req,res,next)=>{
-    
+blogsRouter.post('/',async(req,res,next)=>{
     if(!req.body.likes){
         req.body.likes = 0;
     }
+    const {likes,title,author,url} = req.body;
+    
     if(!req.body.url && !req.body.title){
         res.status(400).json({
             'error':'bad request'
         });
     }
-    const blog = new Blog(req.body);
+
+    const user = await User.findOne({ username: 'aziz_li' });
+
+    console.log(user);
+    const blog = new Blog({
+        likes,
+        title,
+        author,
+        url,
+        user: user._id
+    });
     blog
         .save()
         .then(result => {
