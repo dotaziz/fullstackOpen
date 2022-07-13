@@ -1,0 +1,12 @@
+### ADD USER
+POST  http://localhost:3001/api/users/
+Content-Type: application/json
+
+{
+    "name":"abdul aziz",
+    "username":"aziz_li",
+    "password":"123456"
+}
+
+### GET USERS
+GET  http://localhost:3001/api/users/
