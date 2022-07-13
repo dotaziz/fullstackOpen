@@ -4,8 +4,8 @@ Content-Type: application/json
 
 {
     "name":"abdul aziz",
-    "username":"aziz_li",
-    "password":"123456"
+    "password":"123456",
+    "username":"certyfreak"
 }
 
 ### GET USERS

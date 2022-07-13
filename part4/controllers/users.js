@@ -17,11 +17,28 @@ userRouter.post('/', async (req,res)=>{
 
     const {username,password, name} = req.body;
 
-    username? null : res.status(400).json({error:'username is required'}).end();
+    if(!username){
+        return res.status(400).json({error:'username is required'});
+    }
+    if(!password){
+        return res.status(400).json({error:'password is required'});
+    }
 
-    password ? null : res.status(400).json({error:'password is required'}).end();
+    if(!name){
+        return res.status(400).json({error:'name is required'});
+    }
 
-    name ? null : res.status(400).json({error:'name is required'}).end();
+    if(username.lenth < 3){
+        return res.status(400).json({error:'username should be greater than 3'});
+    }
+
+    if(password.lenth < 3){
+        return res.status(400).json({error:'password should be greater than 3'});
+    } 
+
+    if(User.find({ username })){
+        return res.status(400).json({error:`username is must be unique,${username} already in system `});
+    }
 
     const token = jwt.sign({
         username,
