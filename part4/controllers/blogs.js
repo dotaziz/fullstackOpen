@@ -1,9 +1,25 @@
 const blogsRouter = require('express').Router();
 const Blog = require('../models/blogs');
 const User = require('../models/users');
+const jwt = require('jsonwebtoken');
 require('express-async-errors');
 
+const requestToken = (req)=>{
+    const auth = req.get('authorization');
+    if(auth && auth.toLowerCase().startsWith('bearer')){
+        return auth.substring(7);
+    }
+    return null;
+};
+
 blogsRouter.get('/',(req,res,next)=>{
+    const token = requestToken(req);
+    const decodedToken = jwt.verify(token,process.env.SECRET);
+    if(!decodedToken){
+        return res.status(400).json({
+            error: 'token is invalid'
+        });
+    }
     Blog.find({}).populate('user').then((blogs)=>{
         res.json(blogs);
     }).catch(err=>{
@@ -12,6 +28,13 @@ blogsRouter.get('/',(req,res,next)=>{
 });
 
 blogsRouter.post('/',async(req,res,next)=>{
+    const token = requestToken(req);
+    const decodedToken = jwt.verify(token,process.env.SECRET);
+    if(!decodedToken){
+        return res.status(400).json({
+            error: 'token is invalid'
+        });
+    }
     if(!req.body.likes){
         req.body.likes = 0;
     }
@@ -48,6 +71,13 @@ blogsRouter.post('/',async(req,res,next)=>{
 });
 
 blogsRouter.delete('/:id',async (req,res)=>{
+    const token = requestToken(req);
+    const decodedToken = jwt.verify(token,process.env.SECRET);
+    if(!decodedToken){
+        return res.status(400).json({
+            error: 'token is invalid'
+        });
+    }
     console.log(req.params.id);
 
     const remove = await Blog.findByIdAndDelete(req.params.id);
@@ -60,6 +90,13 @@ blogsRouter.delete('/:id',async (req,res)=>{
 
 
 blogsRouter.put('/:id',async (req,res)=>{
+    const token = requestToken(req);
+    const decodedToken = jwt.verify(token,process.env.SECRET);
+    if(!decodedToken){
+        return res.status(400).json({
+            error: 'token is invalid'
+        });
+    }
     const update = await Blog.findByIdAndUpdate(req.params.id,{'likes':req.body.likes},{new:true});
     if(update.isModified) {
         res.status(204).json('success');

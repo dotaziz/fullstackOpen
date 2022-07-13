@@ -36,7 +36,7 @@ userRouter.post('/', async (req,res)=>{
         return res.status(400).json({error:'password should be greater than 3'});
     } 
 
-    if(User.find({ username })){
+    if(!User.find({ username })){
         return res.status(400).json({error:`username is must be unique,${username} already in system `});
     }
 
