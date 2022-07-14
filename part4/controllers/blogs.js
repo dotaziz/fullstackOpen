@@ -4,17 +4,10 @@ const User = require('../models/users');
 const jwt = require('jsonwebtoken');
 require('express-async-errors');
 
-const requestToken = (req)=>{
-    const auth = req.get('authorization');
-    if(auth && auth.toLowerCase().startsWith('bearer')){
-        return auth.substring(7);
-    }
-    return null;
-};
+
 
 blogsRouter.get('/',(req,res,next)=>{
-    const token = requestToken(req);
-    const decodedToken = jwt.verify(token,process.env.SECRET);
+    const decodedToken = jwt.verify(req.token,process.env.SECRET);
     if(!decodedToken){
         return res.status(400).json({
             error: 'token is invalid'
@@ -28,8 +21,8 @@ blogsRouter.get('/',(req,res,next)=>{
 });
 
 blogsRouter.post('/',async(req,res,next)=>{
-    const token = requestToken(req);
-    const decodedToken = jwt.verify(token,process.env.SECRET);
+    const decodedToken = jwt.verify(req.token,process.env.SECRET);
+    const info = jwt.decode(req.token);
     if(!decodedToken){
         return res.status(400).json({
             error: 'token is invalid'
@@ -39,14 +32,13 @@ blogsRouter.post('/',async(req,res,next)=>{
         req.body.likes = 0;
     }
     const {likes,title,author,url} = req.body;
-    
     if(!req.body.url && !req.body.title){
         res.status(400).json({
             'error':'bad request'
         });
     }
 
-    const user = await User.findOne({ username: 'aziz_li' });
+    const user = await User.findOne({ username: info.username});
 
     console.log(user);
     const blog = new Blog({
@@ -71,27 +63,39 @@ blogsRouter.post('/',async(req,res,next)=>{
 });
 
 blogsRouter.delete('/:id',async (req,res)=>{
-    const token = requestToken(req);
-    const decodedToken = jwt.verify(token,process.env.SECRET);
+    const decodedToken = jwt.verify(req.token,process.env.SECRET);
     if(!decodedToken){
         return res.status(400).json({
             error: 'token is invalid'
         });
     }
-    console.log(req.params.id);
 
-    const remove = await Blog.findByIdAndDelete(req.params.id);
-    if(remove.$isDeleted !== null ){
-        res.status(204).json('success');
+    const info = jwt.decode(req.token);
+    const blog = await Blog.findById(req.params.id );
+    const user = await User.findOne({ username: info.username});
+    if(user.id.toString() === blog?.user.toString()){
+        const remove = await Blog.findByIdAndDelete(req.params.id);
+        const blogsLeft = [];
+        user.blogs.forEach((art)=>{
+            if(art.toString() !== req.params.id){
+                blogsLeft.push(art);
+            }
+        });
+
+        user.blogs = blogsLeft;
+        user.save();
+
+        if(remove.$isDeleted !== null ){
+            return  res.status(204).json('success');
+        }
+    }else {
+        return res.status(400).json('unauthorised');
     }
-
-    res.status(400).json({'error':'content not found'});
 });
 
 
 blogsRouter.put('/:id',async (req,res)=>{
-    const token = requestToken(req);
-    const decodedToken = jwt.verify(token,process.env.SECRET);
+    const decodedToken = jwt.verify(req.token,process.env.SECRET);
     if(!decodedToken){
         return res.status(400).json({
             error: 'token is invalid'

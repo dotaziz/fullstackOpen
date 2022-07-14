@@ -1,8 +1,7 @@
-const jwt = require('jsonwebtoken')
+const jwt = require('jsonwebtoken');
 
-const errorhandler = (err,req,res,next)=>{
+const errorhandler = (err,req,res)=>{
     res.status(400).send(err.message);
-    next();
 };
 
 
@@ -11,7 +10,6 @@ const tokenExtractor = (req,res,next)=>{
     if(auth && auth.toLowerCase().startsWith('bearer')){
         const token = auth.substring(7);
         req.token = token;
-        console.log(token);
     }else{
         req.token = false;
     }
