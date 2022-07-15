@@ -17,6 +17,8 @@ userRouter.post('/', async (req,res)=>{
 
     const {username,password, name} = req.body;
 
+
+
     if(!username){
         return res.status(400).json({error:'username is required'});
     }
@@ -36,7 +38,9 @@ userRouter.post('/', async (req,res)=>{
         return res.status(400).json({error:'password should be greater than 3'});
     } 
 
-    if(!User.find({ username })){
+    const unique_user = await User.findOne({ username });
+
+    if(unique_user){
         return res.status(400).json({error:`username is must be unique,${username} already in system `});
     }
 
