@@ -38,7 +38,7 @@ blogsRouter.post('/',async(req,res,next)=>{
         });
     }
 
-    const user = await User.findOne({ username: info.username});
+    const user = await User.findOne(info.username);
 
     console.log(user);
     const blog = new Blog({
@@ -72,7 +72,10 @@ blogsRouter.delete('/:id',async (req,res)=>{
 
     const info = jwt.decode(req.token);
     const blog = await Blog.findById(req.params.id );
-    const user = await User.findOne({ username: info.username});
+    const user = await User.findOne({ username: req.user});
+    // if(!user.id){
+    //     return res.status(400).json('unauthorised');
+    // }
     if(user.id.toString() === blog?.user.toString()){
         const remove = await Blog.findByIdAndDelete(req.params.id);
         const blogsLeft = [];

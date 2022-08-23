@@ -3,9 +3,18 @@ POST  http://localhost:3001/api/users/
 Content-Type: application/json
 
 {
-    "name":"abdul aziz",
+    "name":"abdulaziz",
     "password":"password",
-    "username":"certyfreak"
+    "username":"certy_freak"
+}
+
+### LOGIN 
+POST http://localhost:3001/api/login
+Content-Type: application/json
+
+{
+    "username":"certy_freak",
+    "password":"password"
 }
 
 ### GET USERS

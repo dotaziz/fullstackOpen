@@ -2,17 +2,17 @@ GET http://localhost:3001/api/blogs/
 Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImNlcnR5ZnJlYWsiLCJwYXNzd29yZCI6InBhc3N3b3JkIiwiaWF0IjoxNjU3ODM0MDI2fQ.8GbjW5ygpLz_Bstv7N-lnBER1GrDRrFs0JrXqrOm_OE
 ###
 POST http://localhost:3001/api/blogs/
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImNlcnR5ZnJlYWsiLCJwYXNzd29yZCI6InBhc3N3b3JkIiwiaWF0IjoxNjU3ODM4OTg1fQ.fI3wviLgwee2orZKGwWYh7jIrVqQVjqi9_egYeL-LYg
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyVmVyaWZ5Ijp7InVzZXJuYW1lIjoiY2VydHlfZnJlYWsiLCJuYW1lIjoiYWJkdWxheml6IiwiYmxvZ3MiOltdLCJpZCI6IjYyZDFmMzAzZGZjYTkzMDlhYmU5ZWNkYyJ9LCJwYXNzd29yZFZlcmlmeSI6e30sImlhdCI6MTY1NzkyNjY0MH0.ue370nWifij6dW-m2wOtWIo5Cc_9hV9luWG3udosOZk
 Content-Type: application/json
 
 {
-    "title": "how to eat",
-    "url":"http://localhost:3001",
-    "author":"aziz ali"
+    "title": "to day hectic but fun",
+    "url":"http://localhost:3002",
+    "author":"certy_freak"
 }
 
 ###
-DELETE http://localhost:3001/api/blogs/62d09da39322053629eb00e2
+DELETE http://localhost:3001/api/blogs/62d1f52851ee322b3f87560e
 Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImNlcnR5ZnJlYWsiLCJwYXNzd29yZCI6InBhc3N3b3JkIiwiaWF0IjoxNjU3ODM4OTg1fQ.fI3wviLgwee2orZKGwWYh7jIrVqQVjqi9_egYeL-LYg
 
 

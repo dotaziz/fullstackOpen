@@ -7,7 +7,7 @@ const userRouter = require('./controllers/users');
 const loginRouter = require('./controllers/login');
 const cors = require('cors');
 const mongoose = require('mongoose');
-const { errorhandler, tokenExtractor } = require('./utils/middleware');
+const { errorhandler, tokenExtractor, userExtractor } = require('./utils/middleware');
 
 
 info('connecting to database');
@@ -23,7 +23,7 @@ app.use(express.json());
 app.use(tokenExtractor);
 
 app.use('/api/login',loginRouter);
-app.use('/api/blogs',blogsRouter);
+app.use('/api/blogs',userExtractor,blogsRouter);
 app.use('/api/users',userRouter);
 
 app.use(errorhandler);
